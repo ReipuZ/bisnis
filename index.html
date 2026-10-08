@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>UMKM Kita Coffee - Coffee Shop</title>
+
+
+    <!-- Tailwind CSS -->
+
+    <link
+        rel="stylesheet"
+        href="./css/output.css"
+    >
+
+
+    <!-- CSS Tambahan -->
+
+    <link
+        rel="stylesheet"
+        href="./css/style.css"
+    >
+
+
+    <!-- Alpine.js -->
+
+    <script
+        defer
+        src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+
+</head>
+
+
+<body
+    class="bg-stone-50 text-stone-800"
+    x-data="{
+        open: false,
+        search: '',
+        category: 'Semua',
+
+        products: [
+            {
+                name: 'Espresso',
+                price: 18000,
+                category: 'Coffee',
+                image: 'https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?auto=format&fit=crop&w=800&q=80'
+            },
+
+            {
+                name: 'Cappuccino',
+                price: 25000,
+                category: 'Coffee',
+                image: 'https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=800&q=80'
+            },
+
+            {
+                name: 'Caffe Latte',
+                price: 27000,
+                category: 'Coffee',
+                image: 'https://images.unsplash.com/photo-1561882468-9110e03e0f78?auto=format&fit=crop&w=800&q=80'
+            },
+
+            {
+                name: 'Caramel Macchiato',
+                price: 30000,
+                category: 'Coffee',
+                image: 'https://images.unsplash.com/photo-1485808191679-5f86510681a2?auto=format&fit=crop&w=800&q=80'
+            },
+
+            {
+                name: 'Matcha Latte',
+                price: 28000,
+                category: 'Non Coffee',
+                image: 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?auto=format&fit=crop&w=800&q=80'
+            },
+
+            {
+                name: 'Chocolate',
+                price: 26000,
+                category: 'Non Coffee',
+                image: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?auto=format&fit=crop&w=800&q=80'
+            }
+        ],
+
+        get filteredProducts() {
+
+            return this.products.filter(product => {
+
+                const cocokKategori =
+                    this.category === 'Semua' ||
+                    product.category === this.category;
+
+                const cocokSearch =
+                    product.name
+                    .toLowerCase()
+                    .includes(this.search.toLowerCase());
+
+                return cocokKategori && cocokSearch;
+
+            });
+
+        },
+
+        formatPrice(price) {
+
+            return new Intl.NumberFormat('id-ID')
+                .format(price);
+
+        }
+    }"
+>
+
+
+    <!-- ================================================= -->
+    <!-- NAVBAR -->
+    <!-- ================================================= -->
+
+    <nav
+        class="bg-white/95 backdrop-blur-md shadow-sm sticky top-0 z-50"
+    >
+
+        <div
+            class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8"
+        >
+
+            <div
+                class="flex justify-between items-center h-20"
+            >
+
+
+                <!-- LOGO -->
+
+                <a
+                    href="index.html"
+                    class="flex items-center gap-3"
+                >
+
+                    <div
+                        class="w-11 h-11 bg-amber-900 text-white rounded-full flex items-center justify-center text-xl"
+                    >
+                        ☕
+                    </div>
+
+                    <div>
+
+                        <h1
+                            class="font-bold text-xl text-stone-900"
+                        >
+                            UMKM Kita
+                        </h1>
+
+                        <p
+                            class="text-xs text-stone-500"
+                        >
+                            Coffee & Taste
+                        </p>
+
+                    </div>
+
+                </a>
+
+
+                <!-- DESKTOP MENU -->
+
+                <div
+                    class="hidden md:flex items-center gap-8"
+                >
+
+                    <a
+                        href="index.html"
+                        class="text-amber-800 font-semibold"
+                    >
+                        Home
+                    </a>
+
+                    <a
+                        href="produk.html"
+                        class="text-stone-600 hover:text-amber-800 transition"
+                    >
+                        Produk
+                    </a>
+
+                    <a
+                        href="tentang.html"
+                        class="text-stone-600 hover:text-amber-800 transition"
+                    >
+                        Tentang
+                    </a>
+
+                    <a
+                        href="kontak.html"
+                        class="text-stone-600 hover:text-amber-800 transition"
+                    >
+                        Kontak
+                    </a>
+
+
+                    <!-- CART -->
+
+                    <a
+                        href="produk.html"
+                        class="relative text-stone-700 hover:text-amber-800 transition"
+                    >
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="2"
+                            stroke="currentColor"
+                            class="w-7 h-7"
+                        >
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M2.25 3h1.386c.51 0 .955.343 1.086.835L5.64 6.75m0 0h13.72c.64 0 1.117.594.98 1.219l-1.5 6.75a1.125 1.125 0 01-1.097.881H8.132a1.125 1.125 0 01-1.097-.881L5.64 6.75z"
+                            />
+
+                        </svg>
+
+                    </a>
+
+                </div>
+
+
+                <!-- MOBILE BUTTON -->
+
+                <button
+                    @click="open = !open"
+                    class="md:hidden text-2xl"
+                >
+
+                    <span x-show="!open">
+                        ☰
+                    </span>
+
+                    <span x-show="open">
+                        ✕
+                    </span>
+
+                </button>
+
+            </div>
+
+
+            <!-- MOBILE MENU -->
+
+            <div
+                x-show="open"
+                x-transition
+                class="md:hidden border-t py-5"
+            >
+
+                <div
+                    class="flex flex-col gap-5"
+                >
+
+                    <a href="index.html">
+                        Home
+                    </a>
+
+                    <a href="produk.html">
+                        Produk
+                    </a>
+
+                    <a href="tentang.html">
+                        Tentang
+                    </a>
+
+                    <a href="kontak.html">
+                        Kontak
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- ================================================= -->
+    <!-- HERO -->
+    <!-- ================================================= -->
+
+    <section
+        class="relative overflow-hidden bg-stone-900 text-white"
+    >
+
+        <div
+            class="absolute inset-0 bg-gradient-to-br from-amber-950 via-stone-900 to-black"
+        ></div>
+
+
+        <div
+            class="relative max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-24 md:py-32"
+        >
+
+            <div
+                class="max-w-3xl animate-fade-up"
+            >
+
+                <span
+                    class="inline-block bg-amber-900/40 border border-amber-700/50 px-4 py-2 rounded-full text-amber-300 text-sm font-semibold mb-6"
+                >
+                    ☕ COFFEE • FRIENDS • MOMENTS
+                </span>
+
+
+                <h1
+                    class="text-4xl sm:text-5xl md:text-7xl font-bold leading-tight mb-6"
+                >
+
+                    Secangkir Kopi,
+
+                    <span class="text-amber-400">
+                        Sejuta Cerita.
+                    </span>
+
+                </h1>
+
+
+                <p
+                    class="text-stone-300 text-lg md:text-xl leading-relaxed mb-8 max-w-2xl"
+                >
+                    Nikmati kopi pilihan yang dibuat dari
+                    biji kopi berkualitas dengan suasana yang
+                    nyaman untuk menemani hari Anda.
+                </p>
+
+
+                <div
+                    class="flex flex-wrap gap-4"
+                >
+
+                    <a
+                        href="produk.html"
+                        class="coffee-button bg-amber-700 hover:bg-amber-600 px-7 py-3.5 rounded-xl font-semibold shadow-lg"
+                    >
+                        Lihat Menu ☕
+                    </a>
+
+                    <a
+                        href="#tentang"
+                        class="coffee-button border border-stone-600 hover:bg-white/10 px-7 py-3.5 rounded-xl font-semibold"
+                    >
+                        Tentang Kami
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- STATISTIK -->
+    <!-- ================================================= -->
+
+    <section class="bg-white border-b">
+
+        <div
+            class="max-w-6xl mx-auto px-5 py-10"
+        >
+
+            <div
+                class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center"
+            >
+
+                <div>
+
+                    <h3
+                        class="text-3xl font-bold text-amber-800"
+                    >
+                        6+
+                    </h3>
+
+                    <p class="text-stone-500 mt-1">
+                        Menu Pilihan
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <h3
+                        class="text-3xl font-bold text-amber-800"
+                    >
+                        100%
+                    </h3>
+
+                    <p class="text-stone-500 mt-1">
+                        Biji Kopi Pilihan
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <h3
+                        class="text-3xl font-bold text-amber-800"
+                    >
+                        4.9/5
+                    </h3>
+
+                    <p class="text-stone-500 mt-1">
+                        Rating Pelanggan
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <h3
+                        class="text-3xl font-bold text-amber-800"
+                    >
+                        24/7
+                    </h3>
+
+                    <p class="text-stone-500 mt-1">
+                        Online Order
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- KEUNGGULAN -->
+    <!-- ================================================= -->
+
+    <section
+        id="tentang"
+        class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-20"
+    >
+
+        <div class="text-center mb-12">
+
+            <p
+                class="text-amber-700 font-bold text-sm"
+            >
+                WHY CHOOSE US?
+            </p>
+
+            <h2
+                class="text-3xl md:text-4xl font-bold mt-2"
+            >
+                Kenapa Kopi Kami?
+            </h2>
+
+        </div>
+
+
+        <div
+            class="grid grid-cols-1 md:grid-cols-3 gap-8"
+        >
+
+            <div
+                class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition duration-300 text-center"
+            >
+
+                <div
+                    class="w-16 h-16 mx-auto bg-amber-100 rounded-full flex items-center justify-center text-3xl mb-5"
+                >
+                    ☕
+                </div>
+
+                <h3 class="text-xl font-bold mb-3">
+                    Biji Kopi Berkualitas
+                </h3>
+
+                <p class="text-stone-600 leading-relaxed">
+                    Menggunakan biji kopi pilihan untuk
+                    menghasilkan rasa dan aroma yang nikmat.
+                </p>
+
+            </div>
+
+
+            <div
+                class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition duration-300 text-center"
+            >
+
+                <div
+                    class="w-16 h-16 mx-auto bg-amber-100 rounded-full flex items-center justify-center text-3xl mb-5"
+                >
+                    👨‍🍳
+                </div>
+
+                <h3 class="text-xl font-bold mb-3">
+                    Dibuat oleh Barista
+                </h3>
+
+                <p class="text-stone-600 leading-relaxed">
+                    Setiap minuman dibuat dengan perhatian
+                    agar menghasilkan cita rasa terbaik.
+                </p>
+
+            </div>
+
+
+            <div
+                class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition duration-300 text-center"
+            >
+
+                <div
+                    class="w-16 h-16 mx-auto bg-amber-100 rounded-full flex items-center justify-center text-3xl mb-5"
+                >
+                    ❤️
+                </div>
+
+                <h3 class="text-xl font-bold mb-3">
+                    Dibuat dengan Hati
+                </h3>
+
+                <p class="text-stone-600 leading-relaxed">
+                    Kepuasan pelanggan menjadi prioritas
+                    dalam setiap minuman yang kami sajikan.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- MENU PRODUK -->
+    <!-- ================================================= -->
+
+    <section
+        class="bg-stone-100 py-20"
+        id="menu"
+    >
+
+        <div
+            class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8"
+        >
+
+
+            <!-- TITLE -->
+
+            <div
+                class="flex flex-col md:flex-row md:justify-between md:items-end gap-5 mb-10"
+            >
+
+                <div>
+
+                    <p
+                        class="text-amber-700 font-bold text-sm"
+                    >
+                        OUR MENU
+                    </p>
+
+                    <h2
+                        class="text-3xl md:text-4xl font-bold mt-2"
+                    >
+                        Menu Favorit
+                    </h2>
+
+                </div>
+
+
+                <a
+                    href="produk.html"
+                    class="text-amber-800 font-semibold hover:underline"
+                >
+                    Lihat Semua →
+                </a>
+
+            </div>
+
+
+            <!-- SEARCH -->
+
+            <div
+                class="bg-white rounded-2xl p-5 shadow-sm mb-8"
+            >
+
+                <div
+                    class="flex flex-col md:flex-row gap-4"
+                >
+
+                    <input
+                        type="text"
+                        x-model="search"
+                        placeholder="🔎 Cari kopi favoritmu..."
+                        class="flex-1 border border-stone-200 rounded-xl px-5 py-3 focus:outline-none focus:ring-2 focus:ring-amber-700"
+                    >
+
+
+                    <div
+                        class="flex gap-2 overflow-x-auto"
+                    >
+
+                        <button
+                            @click="category = 'Semua'"
+                            :class="category === 'Semua'
+                                ? 'bg-amber-800 text-white'
+                                : 'bg-stone-100 text-stone-700'"
+                            class="px-5 py-3 rounded-xl font-semibold whitespace-nowrap transition"
+                        >
+                            Semua
+                        </button>
+
+                        <button
+                            @click="category = 'Coffee'"
+                            :class="category === 'Coffee'
+                                ? 'bg-amber-800 text-white'
+                                : 'bg-stone-100 text-stone-700'"
+                            class="px-5 py-3 rounded-xl font-semibold whitespace-nowrap transition"
+                        >
+                            ☕ Coffee
+                        </button>
+
+                        <button
+                            @click="category = 'Non Coffee'"
+                            :class="category === 'Non Coffee'
+                                ? 'bg-amber-800 text-white'
+                                : 'bg-stone-100 text-stone-700'"
+                            class="px-5 py-3 rounded-xl font-semibold whitespace-nowrap transition"
+                        >
+                            🥤 Non Coffee
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- PRODUCT GRID -->
+
+            <div
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+
+                <template
+                    x-for="product in filteredProducts"
+                    :key="product.name"
+                >
+
+                    <div
+                        class="coffee-card bg-white rounded-2xl overflow-hidden shadow-sm"
+                    >
+
+                        <div
+                            class="h-56 overflow-hidden"
+                        >
+
+                            <img
+                                :src="product.image"
+                                :alt="product.name"
+                                class="coffee-image w-full h-full object-cover"
+                            >
+
+                        </div>
+
+
+                        <div class="p-6">
+
+                            <span
+                                class="text-xs font-bold text-amber-700 uppercase"
+                                x-text="product.category"
+                            >
+                            </span>
+
+
+                            <h3
+                                class="text-xl font-bold mt-2"
+                                x-text="product.name"
+                            >
+                            </h3>
+
+
+                            <div
+                                class="flex justify-between items-center mt-5"
+                            >
+
+                                <p
+                                    class="text-lg font-bold text-amber-800"
+                                    x-text="'Rp' + formatPrice(product.price)"
+                                >
+                                </p>
+
+
+                                <a
+                                    href="produk.html"
+                                    class="coffee-button bg-amber-800 text-white px-4 py-2 rounded-lg hover:bg-amber-700"
+                                >
+                                    Detail
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </template>
+
+            </div>
+
+
+            <!-- EMPTY SEARCH -->
+
+            <div
+                x-show="filteredProducts.length === 0"
+                x-transition
+                class="text-center py-16"
+            >
+
+                <div class="text-5xl mb-4">
+                    ☕
+                </div>
+
+                <h3 class="text-xl font-bold">
+                    Produk tidak ditemukan
+                </h3>
+
+                <p class="text-stone-500 mt-2">
+                    Coba gunakan kata pencarian lain.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- TESTIMONIAL -->
+    <!-- ================================================= -->
+
+    <section class="max-w-6xl mx-auto px-5 py-20">
+
+        <div class="text-center mb-12">
+
+            <p
+                class="text-amber-700 font-bold text-sm"
+            >
+                CUSTOMER REVIEW
+            </p>
+
+            <h2
+                class="text-3xl md:text-4xl font-bold mt-2"
+            >
+                Kata Mereka
+            </h2>
+
+        </div>
+
+
+        <div
+            class="grid grid-cols-1 md:grid-cols-3 gap-8"
+        >
+
+            <div
+                class="bg-white p-7 rounded-2xl shadow-sm border border-stone-100"
+            >
+
+                <div class="text-amber-500 mb-4">
+                    ★★★★★
+                </div>
+
+                <p class="text-stone-600 leading-relaxed mb-6">
+                    "Kopinya enak dan aromanya wangi banget.
+                    Cocok untuk menemani belajar."
+                </p>
+
+                <p class="font-bold">
+                    — Pelanggan UMKM Kita
+                </p>
+
+            </div>
+
+
+            <div
+                class="bg-white p-7 rounded-2xl shadow-sm border border-stone-100"
+            >
+
+                <div class="text-amber-500 mb-4">
+                    ★★★★★
+                </div>
+
+                <p class="text-stone-600 leading-relaxed mb-6">
+                    "Cappuccinonya creamy dan rasanya pas.
+                    Harganya juga cukup terjangkau."
+                </p>
+
+                <p class="font-bold">
+                    — Pelanggan UMKM Kita
+                </p>
+
+            </div>
+
+
+            <div
+                class="bg-white p-7 rounded-2xl shadow-sm border border-stone-100"
+            >
+
+                <div class="text-amber-500 mb-4">
+                    ★★★★★
+                </div>
+
+                <p class="text-stone-600 leading-relaxed mb-6">
+                    "Tempat yang cocok buat santai dan
+                    ngobrol sambil menikmati kopi."
+                </p>
+
+                <p class="font-bold">
+                    — Pelanggan UMKM Kita
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- CTA -->
+    <!-- ================================================= -->
+
+    <section
+        class="bg-amber-900 text-white"
+    >
+
+        <div
+            class="max-w-6xl mx-auto px-5 py-20 text-center"
+        >
+
+            <div class="text-5xl mb-6 animate-float">
+                ☕
+            </div>
+
+            <h2
+                class="text-3xl md:text-5xl font-bold mb-5"
+            >
+                Saatnya Menikmati Kopi Favoritmu
+            </h2>
+
+            <p
+                class="text-amber-100 text-lg mb-8"
+            >
+                Pilih menu favorit dan pesan sekarang.
+            </p>
+
+            <a
+                href="produk.html"
+                class="inline-block bg-white text-amber-900 px-8 py-4 rounded-xl font-bold hover:bg-amber-50 transition"
+            >
+                Pesan Sekarang
+            </a>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- INFO -->
+    <!-- ================================================= -->
+
+    <section class="bg-stone-900 text-white">
+
+        <div
+            class="max-w-6xl mx-auto px-5 py-16"
+        >
+
+            <div
+                class="grid grid-cols-1 md:grid-cols-3 gap-10"
+            >
+
+                <div>
+
+                    <div class="text-3xl mb-4">
+                        📍
+                    </div>
+
+                    <h3 class="font-bold text-lg mb-2">
+                        Lokasi
+                    </h3>
+
+                    <p class="text-stone-400">
+                        Jl. Contoh No. 10<br>
+                        Semarang, Jawa Tengah
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <div class="text-3xl mb-4">
+                        🕐
+                    </div>
+
+                    <h3 class="font-bold text-lg mb-2">
+                        Jam Buka
+                    </h3>
+
+                    <p class="text-stone-400">
+                        Senin - Minggu<br>
+                        08.00 - 22.00
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <div class="text-3xl mb-4">
+                        📱
+                    </div>
+
+                    <h3 class="font-bold text-lg mb-2">
+                        Hubungi Kami
+                    </h3>
+
+                    <p class="text-stone-400">
+                        WhatsApp: 08xxxxxxxxxx<br>
+                        Email: umkm@email.com
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- FOOTER -->
+    <!-- ================================================= -->
+
+    <footer class="bg-black text-white">
+
+        <div
+            class="max-w-6xl mx-auto px-5 py-8"
+        >
+
+            <div
+                class="flex flex-col md:flex-row justify-between items-center gap-4"
+            >
+
+                <p class="text-stone-500">
+                    © 2026 UMKM Kita Coffee.
+                    All Rights Reserved.
+                </p>
+
+
+                <div class="flex gap-5">
+
+                    <a
+                        href="produk.html"
+                        class="text-stone-400 hover:text-white transition"
+                    >
+                        Produk
+                    </a>
+
+                    <a
+                        href="tentang.html"
+                        class="text-stone-400 hover:text-white transition"
+                    >
+                        Tentang
+                    </a>
+
+                    <a
+                        href="kontak.html"
+                        class="text-stone-400 hover:text-white transition"
+                    >
+                        Kontak
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- ================================================= -->
+    <!-- BACK TO TOP -->
+    <!-- ================================================= -->
+
+    <a
+        href="#"
+        class="fixed bottom-6 right-6 w-12 h-12 bg-amber-800 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-amber-700 hover:-translate-y-1 transition"
+    >
+        ↑
+    </a>
+
+
+
+    <!-- JavaScript -->
+
+    <script src="./js/script.js"></script>
+
+</body>
+
+</html>

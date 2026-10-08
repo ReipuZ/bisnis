@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Produk - UMKM Kita Coffee</title>
+
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="./css/output.css">
+
+    <!-- CSS Tambahan -->
+    <link rel="stylesheet" href="./css/style.css">
+
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-stone-50 text-stone-800"
+    x-data="coffeeShop()"
+    x-init="init()"
+>
+
+    <!-- ================================================= -->
+    <!-- NAVBAR -->
+    <!-- ================================================= -->
+
+    <nav class="bg-white/95 backdrop-blur-md shadow-sm sticky top-0 z-50">
+
+        <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+
+            <div class="flex justify-between items-center h-20">
+
+                <!-- LOGO -->
+
+                <a href="index.html" class="flex items-center gap-3">
+
+                    <div
+                        class="w-11 h-11 bg-amber-900 text-white rounded-full flex items-center justify-center text-xl"
+                    >
+                        ☕
+                    </div>
+
+                    <div>
+
+                        <h1 class="font-bold text-xl text-stone-900">
+                            UMKM Kita
+                        </h1>
+
+                        <p class="text-xs text-stone-500">
+                            Coffee & Taste
+                        </p>
+
+                    </div>
+
+                </a>
+
+
+                <!-- DESKTOP MENU -->
+
+                <div class="hidden md:flex items-center gap-8">
+
+                    <a
+                        href="index.html"
+                        class="text-stone-600 hover:text-amber-800 transition"
+                    >
+                        Home
+                    </a>
+
+                    <a
+                        href="produk.html"
+                        class="text-amber-800 font-semibold"
+                    >
+                        Produk
+                    </a>
+
+                    <a
+                        href="tentang.html"
+                        class="text-stone-600 hover:text-amber-800 transition"
+                    >
+                        Tentang
+                    </a>
+
+                    <a
+                        href="kontak.html"
+                        class="text-stone-600 hover:text-amber-800 transition"
+                    >
+                        Kontak
+                    </a>
+
+
+                    <!-- CART -->
+
+                    <button
+                        @click="cartOpen = true"
+                        class="relative text-stone-700 hover:text-amber-800 transition"
+                        aria-label="Buka keranjang"
+                    >
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="2"
+                            stroke="currentColor"
+                            class="w-7 h-7"
+                        >
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M2.25 3h1.386c.51 0 .955.343 1.086.835L5.64 6.75m0 0h13.72c.64 0 1.117.594.98 1.219l-1.5 6.75a1.125 1.125 0 01-1.097.881H8.132a1.125 1.125 0 01-1.097-.881L5.64 6.75z"
+                            />
+
+                        </svg>
+
+                        <span
+                            x-show="totalItems > 0"
+                            x-cloak
+                            x-text="totalItems"
+                            class="cart-badge absolute -top-2 -right-2 bg-amber-700 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center"
+                        ></span>
+
+                    </button>
+
+                </div>
+
+
+                <!-- MOBILE BUTTON -->
+
+                <button
+                    @click="mobileMenu = !mobileMenu"
+                    class="md:hidden text-2xl text-stone-800"
+                    aria-label="Menu"
+                >
+
+                    <span x-show="!mobileMenu">
+                        ☰
+                    </span>
+
+                    <span x-show="mobileMenu">
+                        ✕
+                    </span>
+
+                </button>
+
+            </div>
+
+
+            <!-- MOBILE MENU -->
+
+            <div
+                x-show="mobileMenu"
+                x-cloak
+                x-transition
+                class="md:hidden border-t border-stone-200 py-5"
+            >
+
+                <div class="flex flex-col gap-5">
+
+                    <a
+                        href="index.html"
+                        class="text-stone-700 hover:text-amber-800"
+                    >
+                        Home
+                    </a>
+
+                    <a
+                        href="produk.html"
+                        class="text-amber-800 font-semibold"
+                    >
+                        Produk
+                    </a>
+
+                    <a
+                        href="tentang.html"
+                        class="text-stone-700 hover:text-amber-800"
+                    >
+                        Tentang
+                    </a>
+
+                    <a
+                        href="kontak.html"
+                        class="text-stone-700 hover:text-amber-800"
+                    >
+                        Kontak
+                    </a>
+
+                    <button
+                        @click="cartOpen = true; mobileMenu = false"
+                        class="text-left text-stone-700 hover:text-amber-800"
+                    >
+                        🛒 Keranjang
+
+                        <span
+                            x-show="totalItems > 0"
+                            x-text="'(' + totalItems + ')'"
+                        ></span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================================================= -->
+    <!-- HEADER -->
+    <!-- ================================================= -->
+
+    <section class="relative overflow-hidden bg-stone-900 text-white">
+
+        <div class="absolute inset-0 hero-overlay"></div>
+
+        <div class="relative max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-20 md:py-24">
+
+            <div class="text-center fade-up">
+
+                <span
+                    class="inline-block bg-amber-900/40 border border-amber-700/50 px-4 py-2 rounded-full text-amber-300 text-sm font-semibold mb-5"
+                >
+                    ☕ OUR MENU
+                </span>
+
+                <h1 class="text-4xl md:text-6xl font-bold mb-5">
+                    Menu <span class="text-amber-400">Favorit</span>
+                </h1>
+
+                <p class="text-stone-300 text-lg max-w-2xl mx-auto">
+                    Pilih minuman favoritmu dan nikmati cita rasa kopi
+                    terbaik dari UMKM Kita Coffee.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- SEARCH & CATEGORY -->
+    <!-- ================================================= -->
+
+    <section class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pt-12">
+
+        <div class="bg-white rounded-2xl shadow-sm p-5">
+
+            <div class="flex flex-col lg:flex-row gap-4">
+
+                <!-- SEARCH -->
+
+                <div class="relative flex-1">
+
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2">
+                        🔎
+                    </span>
+
+                    <input
+                        type="text"
+                        x-model="search"
+                        placeholder="Cari menu favoritmu..."
+                        class="w-full border border-stone-200 rounded-xl px-12 py-3.5 focus:outline-none focus:ring-2 focus:ring-amber-700"
+                    >
+
+                </div>
+
+
+                <!-- CATEGORY -->
+
+                <div class="flex gap-2 overflow-x-auto">
+
+                    <button
+                        @click="category = 'Semua'"
+                        :class="category === 'Semua'
+                            ? 'bg-amber-800 text-white'
+                            : 'bg-stone-100 text-stone-700'"
+                        class="px-5 py-3 rounded-xl font-semibold whitespace-nowrap transition"
+                    >
+                        Semua
+                    </button>
+
+                    <button
+                        @click="category = 'Coffee'"
+                        :class="category === 'Coffee'
+                            ? 'bg-amber-800 text-white'
+                            : 'bg-stone-100 text-stone-700'"
+                        class="px-5 py-3 rounded-xl font-semibold whitespace-nowrap transition"
+                    >
+                        ☕ Coffee
+                    </button>
+
+                    <button
+                        @click="category = 'Non Coffee'"
+                        :class="category === 'Non Coffee'
+                            ? 'bg-amber-800 text-white'
+                            : 'bg-stone-100 text-stone-700'"
+                        class="px-5 py-3 rounded-xl font-semibold whitespace-nowrap transition"
+                    >
+                        🥤 Non Coffee
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- PRODUCT -->
+    <!-- ================================================= -->
+
+    <main class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-12">
+
+        <div
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
+
+            <template
+                x-for="product in filteredProducts"
+                :key="product.id"
+            >
+
+                <div
+                    class="product-card bg-white rounded-2xl overflow-hidden shadow-sm border border-stone-100"
+                >
+
+                    <!-- IMAGE -->
+
+                    <div class="h-60 overflow-hidden">
+
+                        <img
+                            :src="product.image"
+                            :alt="product.name"
+                            class="product-image w-full h-full object-cover"
+                            loading="lazy"
+                        >
+
+                    </div>
+
+
+                    <!-- CONTENT -->
+
+                    <div class="p-6">
+
+                        <span
+                            class="text-xs font-bold text-amber-700 uppercase tracking-wide"
+                            x-text="product.category"
+                        ></span>
+
+                        <h2
+                            class="text-xl font-bold mt-2 text-stone-900"
+                            x-text="product.name"
+                        ></h2>
+
+                        <p
+                            class="text-stone-500 text-sm mt-2 leading-relaxed"
+                            x-text="product.description"
+                        ></p>
+
+
+                        <div class="flex items-center justify-between mt-6">
+
+                            <p
+                                class="text-lg font-bold text-amber-800"
+                                x-text="'Rp' + formatPrice(product.price)"
+                            ></p>
+
+                            <button
+                                @click="addToCart(product)"
+                                class="btn-coffee bg-amber-800 hover:bg-amber-700 text-white px-4 py-2.5 rounded-xl font-semibold"
+                            >
+                                🛒 Tambah
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </template>
+
+        </div>
+
+
+        <!-- EMPTY -->
+
+        <div
+            x-show="filteredProducts.length === 0"
+            x-cloak
+            class="text-center py-20"
+        >
+
+            <div class="text-6xl mb-5">
+                ☕
+            </div>
+
+            <h3 class="text-2xl font-bold">
+                Menu tidak ditemukan
+            </h3>
+
+            <p class="text-stone-500 mt-2">
+                Coba gunakan kata pencarian yang berbeda.
+            </p>
+
+        </div>
+
+    </main>
+
+
+    <!-- ================================================= -->
+    <!-- PROMO -->
+    <!-- ================================================= -->
+
+    <section class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-16">
+
+        <div
+            class="bg-amber-900 rounded-3xl p-8 md:p-12 text-white overflow-hidden relative"
+        >
+
+            <div class="absolute -right-10 -top-10 text-9xl opacity-10">
+                ☕
+            </div>
+
+            <div class="relative">
+
+                <span class="text-amber-300 font-bold text-sm">
+                    SPECIAL OFFER
+                </span>
+
+                <h2 class="text-3xl md:text-4xl font-bold mt-2">
+                    Ngopi Lebih Seru Bersama Kami
+                </h2>
+
+                <p class="text-amber-100 mt-3 max-w-2xl">
+                    Pilih menu favoritmu dan tambahkan ke keranjang
+                    untuk melakukan pemesanan.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- CART OVERLAY -->
+    <!-- ================================================= -->
+
+    <div
+        x-show="cartOpen"
+        x-cloak
+        x-transition.opacity
+        @click="cartOpen = false"
+        class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60]"
+    ></div>
+
+
+    <!-- ================================================= -->
+    <!-- CART DRAWER -->
+    <!-- ================================================= -->
+
+    <aside
+        x-show="cartOpen"
+        x-cloak
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="translate-x-full"
+        x-transition:enter-end="translate-x-0"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="translate-x-0"
+        x-transition:leave-end="translate-x-full"
+        class="fixed top-0 right-0 h-full w-full max-w-md bg-[#fffaf3] z-[70] shadow-2xl flex flex-col"
+        @keydown.escape.window="cartOpen = false"
+    >
+
+        <!-- CART HEADER -->
+
+        <div class="flex justify-between items-center p-6 border-b border-stone-200">
+
+            <div>
+
+                <h2 class="text-2xl font-bold text-stone-900">
+                    Keranjang
+                </h2>
+
+                <p
+                    class="text-sm text-stone-500 mt-1"
+                    x-text="totalItems + ' barang'"
+                ></p>
+
+            </div>
+
+            <button
+                @click="cartOpen = false"
+                class="text-stone-500 hover:text-red-500 text-2xl"
+                aria-label="Tutup keranjang"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <!-- CART CONTENT -->
+
+        <div class="flex-1 overflow-y-auto p-6">
+
+            <!-- EMPTY -->
+
+            <div
+                x-show="cart.length === 0"
+                class="text-center py-20"
+            >
+
+                <div class="text-6xl mb-5">
+                    🛒
+                </div>
+
+                <h3 class="font-bold text-xl">
+                    Keranjang masih kosong
+                </h3>
+
+                <p class="text-stone-500 mt-2">
+                    Yuk pilih menu favoritmu!
+                </p>
+
+                <button
+                    @click="cartOpen = false"
+                    class="mt-6 bg-amber-800 hover:bg-amber-700 text-white px-5 py-3 rounded-xl font-semibold"
+                >
+                    Lihat Menu
+                </button>
+
+            </div>
+
+
+            <!-- ITEMS -->
+
+            <div
+                x-show="cart.length > 0"
+                class="space-y-4"
+            >
+
+                <template
+                    x-for="item in cart"
+                    :key="item.id"
+                >
+
+                    <div
+                        class="bg-white border border-stone-200 rounded-2xl p-4"
+                    >
+
+                        <div class="flex gap-4">
+
+                            <img
+                                :src="item.image"
+                                :alt="item.name"
+                                class="w-20 h-20 rounded-xl object-cover"
+                            >
+
+                            <div class="flex-1">
+
+                                <div class="flex justify-between gap-3">
+
+                                    <div>
+
+                                        <h3
+                                            class="font-bold text-stone-900"
+                                            x-text="item.name"
+                                        ></h3>
+
+                                        <p
+                                            class="text-amber-800 font-semibold mt-1"
+                                            x-text="'Rp' + formatPrice(item.price)"
+                                        ></p>
+
+                                    </div>
+
+                                    <button
+                                        @click="removeFromCart(item.id)"
+                                        class="text-red-500 hover:text-red-700"
+                                        aria-label="Hapus produk"
+                                    >
+                                        🗑️
+                                    </button>
+
+                                </div>
+
+
+                                <!-- QUANTITY -->
+
+                                <div class="flex justify-between items-center mt-4">
+
+                                    <div class="flex items-center gap-3">
+
+                                        <button
+                                            @click="decrease(item.id)"
+                                            class="w-8 h-8 bg-stone-100 hover:bg-stone-200 rounded-lg font-bold"
+                                            aria-label="Kurangi jumlah"
+                                        >
+                                            −
+                                        </button>
+
+                                        <span
+                                            x-text="item.quantity"
+                                            class="font-bold min-w-5 text-center"
+                                        ></span>
+
+                                        <button
+                                            @click="increase(item.id)"
+                                            class="w-8 h-8 bg-amber-800 hover:bg-amber-700 text-white rounded-lg font-bold"
+                                            aria-label="Tambah jumlah"
+                                        >
+                                            +
+                                        </button>
+
+                                    </div>
+
+                                    <p
+                                        class="font-bold text-stone-900"
+                                        x-text="'Rp' + formatPrice(item.price * item.quantity)"
+                                    ></p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </template>
+
+            </div>
+
+        </div>
+
+
+        <!-- CART TOTAL -->
+
+        <div
+            x-show="cart.length > 0"
+            class="border-t border-stone-200 p-6 bg-white"
+        >
+
+            <div class="flex justify-between mb-5">
+
+                <span class="text-stone-600">
+                    Total
+                </span>
+
+                <span
+                    class="text-xl font-bold text-amber-800"
+                    x-text="'Rp' + formatPrice(totalPrice)"
+                ></span>
+
+            </div>
+
+
+            <!-- CHECKOUT -->
+
+            <button
+                @click="checkout()"
+                class="w-full bg-amber-800 hover:bg-amber-700 text-white py-3.5 rounded-xl font-bold transition"
+            >
+                Checkout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================================================= -->
+    <!-- TOAST -->
+    <!-- ================================================= -->
+
+    <div
+        x-show="toast"
+        x-cloak
+        x-transition
+        class="toast fixed bottom-6 left-1/2 -translate-x-1/2 z-[80] bg-stone-900 text-white px-6 py-3 rounded-xl shadow-xl"
+    >
+
+        <span x-text="toast"></span>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- FOOTER -->
+    <!-- ================================================= -->
+
+    <footer class="bg-stone-900 text-white">
+
+        <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-10">
+
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+
+                <div>
+
+                    <h3 class="font-bold text-lg">
+                        ☕ UMKM Kita Coffee
+                    </h3>
+
+                    <p class="text-stone-400 text-sm mt-1">
+                        Coffee & Taste
+                    </p>
+
+                </div>
+
+                <p class="text-stone-500 text-sm">
+                    © 2026 UMKM Kita Coffee. All Rights Reserved.
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- ================================================= -->
+    <!-- JAVASCRIPT -->
+    <!-- ================================================= -->
+
+    <script src="./js/script.js"></script>
+
+</body>
+
+</html>
